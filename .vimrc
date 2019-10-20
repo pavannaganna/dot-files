@@ -2,6 +2,7 @@
 
 call plug#begin('~/.vim/plugged')
 " shorthand notation; fetches https://github.com/junegunn/vim-easy-align
+Plug 'valloric/youcompleteme'
 Plug 'junegunn/vim-easy-align'
 Plug 'tpope/vim-fugitive'
 Plug 'scrooloose/nerdtree'
@@ -22,36 +23,51 @@ Plug 'alvan/vim-closetag'
 Plug 'mattn/emmet-vim'
 Plug 'skywind3000/asyncrun.vim'
 Plug 'heavenshell/vim-jsdoc'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries'  }
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'SirVer/ultisnips'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'valloric/youcompleteme'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries'  }
 " colorschemes
+Plug 'trusktr/seti.vim'
+Plug 'cormacrelf/vim-colors-github'
+Plug 'endel/vim-github-colorscheme'
+Plug 'ayu-theme/ayu-vim'
+Plug 'junegunn/seoul256.vim'
 Plug 'fatih/molokai'
 Plug 'tomasiser/vim-code-dark'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'chriskempson/tomorrow-theme'
 Plug 'drewtempelmeyer/palenight.vim'
 Plug 'ayu-theme/ayu-vim'
+Plug 'herrbischoff/cobalt2.vim'
 Plug 'tpope/vim-commentary'
-Plug 'nathanaelkane/vim-indent-guides'
 Plug 'tpope/vim-endwise'
 Plug 'easymotion/vim-easymotion'
 Plug 'ryanoasis/vim-devicons'
+Plug 'vim-scripts/summerfruit256.vim'
+Plug 'gabrielelana/vim-markdown'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
+Plug 'junegunn/fzf.vim'
+Plug 'altercation/vim-colors-solarized'
+Plug 'yggdroot/indentline'
+Plug 'vadv/vim-chef'
+Plug 'ajmwagar/vim-deus'
+Plug 'dracula/vim'
+Plug 'thoughtbot/vim-rspec'
 call plug#end()
 
 set nocompatible                " Enables us Vim specific features
 filetype off                    " Reset filetype detection first ...
 filetype plugin indent on       " ... and enable filetype detection
+if !has('nvim')
+	set ttymouse=xterm2             " Indicate terminal type for mouse codes
+	set ttyscroll=3                 " Speedup scrolling
+endif
 set ttyfast                     " Indicate fast terminal conn for faster redraw
-set ttymouse=xterm2             " Indicate terminal type for mouse codes
-set ttyscroll=3                 " Speedup scrolling
 set laststatus=2                " Show status line always
 set encoding=utf-8              " Set default encoding to UTF-8
 set autoread                    " Automatically read changed files
 set autoindent                  " Enabile Autoindent
-set backspace=indent,eol,start  " Makes backspace key more powerful.
 set incsearch                   " Shows the match while typing
 set hlsearch                    " Highlight found searches
 set noerrorbells                " No beeps
@@ -81,22 +97,48 @@ if has('unnamedplus')
   set clipboard^=unnamedplus
 endif
 
+set clipboard=unnamed
+
 " This enables us to undo files even if you exit Vim.
 if has('persistent_undo')
   set undofile
   set undodir=~/.config/vim/tmp/undo//
 endif
-
+" identLine
+let g:indentLine_enabled = 1
+let g:indentLine_faster = 1
+let g:indentLine_char = '┆'
+let g:indentLine_setColors = 1
+let g:indentLine_showFirstIndentLevel = 1
 " Colorscheme
 syntax enable
+set termguicolors
 set t_Co=256
 let g:rehash256 = 1
-let g:molokai_original = 0
-colorscheme molokai
-
+let g:molokai_original = 1
+"colorscheme molokai
+"colorscheme github
+"colorscheme summerfruit256
+"colorscheme deus
+"colorscheme dracula
+"colorscheme seti
+colorscheme cobalt2
+"let ayucolor="light"
+"colorschem ayu
 """"""""""""""""""""""
 "      Mappings      "
 """"""""""""""""""""""
+" don't use arrowkeys
+noremap <Up> <NOP>
+noremap <Down> <NOP>
+noremap <Left> <NOP>
+noremap <Right> <NOP>
+
+" really, just don't
+inoremap <Up>    <NOP>
+inoremap <Down>  <NOP>
+inoremap <Left>  <NOP>
+inoremap <Right> <NOP>
 
 " Set leader shortcut to a comma ','. By default it's the backslash
 let mapleader = ","
@@ -139,7 +181,7 @@ let g:go_highlight_functions = 1
 let g:go_highlight_function_calls = 1
 let g:go_highlight_extra_types = 1
 let g:go_highlight_generate_tags = 1
-
+let g:go_gocode_propose_source=0
 " Open :GoDeclsDir with ctrl-g
 nmap <C-g> :GoDeclsDir<cr>
 imap <C-g> <esc>:<C-u>GoDeclsDir<cr>
@@ -184,13 +226,19 @@ augroup go
   autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
 augroup END
 
+augroup filetypes
+  autocmd!
+  autocmd FileType ruby,eruby,yaml,markdown,json set ai sw=2 sts=2 et
+augroup END
 
 " Toggle nerdtree
-silent! map <F2> :NERDTreeToggle<CR>
-let g:NERDTreeMapActivateNode="<F2>"
+"let g:NERDTreeMapActivateNode="<F2>"
 let g:NERDTreeMapPreview="<F3>"
 let NERDTreeShowHidden=1 " show dot files by default
-
+"set autochdir
+let NERDTreeChDirMode=2
+nnoremap <leader>q :NERDTreeToggle<CR>
+nmap <Leader><CR> :nohlsearch<cr>
 " set line numbers by default
 set number
 
@@ -209,11 +257,8 @@ let g:syntastic_check_on_wq = 1
 let g:syntastic_python_checkers = ['pylint']
 let g:syntastic_javascript_checkers = ['eslint'] " use eslint as javascript linter
 let g:syntastic_javascript_eslint_exe = 'npm run lint --'
-"let g:syntastic_go_checkers = ['go', 'golint', 'errcheck']
-
-let g:go_metalinter_autosave = 1
-let g:go_metalinter_autosave_enabled = ['vet', 'golint', 'errcheck']
-let g:go_metalinter_deadline = "5s"
+let g:syntastic_ruby_checkers = ['rubocop']
+let g:syntastic_go_checkers = ['go', 'golint', 'errcheck']
 
 set nofoldenable    " disable folding
 let g:airline_theme = 'codedark'
@@ -230,10 +275,6 @@ autocmd BufWritePost *.js AsyncRun -post=checktime ./node_modules/.bin/eslint --
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
-let g:indentLine_char = ''
-let g:indentLine_first_char = ''
-let g:indentLine_showFirstIndentLevel = 1
-let g:indentLine_setColors = 0
 
 set encoding=UTF-8
 let g:airline_powerline_fonts = 1
@@ -252,6 +293,20 @@ let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 let g:airline#extensions#tabline#tab_nr_type = 1
 let g:airline#extensions#tabline#enabled = 1
 
+" pymode 
+let g:pymode_python = 'python3'
+" make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+autocmd filetype crontab setlocal nobackup nowritebackup
+set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
+" Vim
 " build_go_files is a custom function that builds or compiles the test file.
 " It calls :GoBuild if its a Go file, or :GoTestCompile if it's a test file
 function! s:build_go_files()
