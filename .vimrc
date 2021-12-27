@@ -7,15 +7,13 @@ Plug 'junegunn/vim-easy-align'
 Plug 'tpope/vim-fugitive'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-surround'
-Plug 'scrooloose/syntastic'
+Plug 'dense-analysis/ale'
 Plug 'airblade/vim-gitgutter'
 Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdcommenter'
-Plug 'bling/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+Plug 'vim-airline/vim-airline'
 Plug 'tpope/vim-repeat'
 Plug 'ervandew/supertab'
-Plug 'klen/python-mode'
 Plug 'chun-yang/auto-pairs'
 Plug 'mxw/vim-jsx'
 Plug 'pangloss/vim-javascript'
@@ -39,7 +37,6 @@ Plug 'NLKNguyen/papercolor-theme'
 Plug 'chriskempson/tomorrow-theme'
 Plug 'drewtempelmeyer/palenight.vim'
 Plug 'ayu-theme/ayu-vim'
-Plug 'herrbischoff/cobalt2.vim'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-endwise'
 Plug 'easymotion/vim-easymotion'
@@ -116,13 +113,12 @@ set termguicolors
 set t_Co=256
 let g:rehash256 = 1
 let g:molokai_original = 1
-"colorscheme molokai
+colorscheme molokai
 "colorscheme github
 "colorscheme summerfruit256
 "colorscheme deus
 "colorscheme dracula
 "colorscheme seti
-colorscheme cobalt2
 "let ayucolor="light"
 "colorschem ayu
 """"""""""""""""""""""
@@ -245,20 +241,10 @@ set number
 " turn on mouse mode
 set mouse=a
 
-" syntastic settings
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 1
-let g:syntastic_python_checkers = ['pylint']
-let g:syntastic_javascript_checkers = ['eslint'] " use eslint as javascript linter
-let g:syntastic_javascript_eslint_exe = 'npm run lint --'
-let g:syntastic_ruby_checkers = ['rubocop']
-let g:syntastic_go_checkers = ['go', 'golint', 'errcheck']
+" ale settings
+let g:ale_linters = {'python': ['flake8', 'pydocstyle', 'bandit', 'mypy']}
+let g:ale_fixers = {'*': ['remove_trailing_lines', 'trim_whitespace'], 'python': ['black', 'isort']}
+let g:ale_fix_on_save = 1
 
 set nofoldenable    " disable folding
 let g:airline_theme = 'codedark'
@@ -293,8 +279,6 @@ let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
 let g:airline#extensions#tabline#tab_nr_type = 1
 let g:airline#extensions#tabline#enabled = 1
 
-" pymode 
-let g:pymode_python = 'python3'
 " make YCM compatible with UltiSnips (using supertab)
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
