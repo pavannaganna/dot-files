@@ -36,6 +36,8 @@ Plug 'tomasiser/vim-code-dark'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'chriskempson/tomorrow-theme'
 Plug 'drewtempelmeyer/palenight.vim'
+Plug 'arcticicestudio/nord-vim'
+Plug 'morhetz/gruvbox'
 Plug 'ayu-theme/ayu-vim'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-endwise'
@@ -112,15 +114,8 @@ syntax enable
 set termguicolors
 set t_Co=256
 let g:rehash256 = 1
-let g:molokai_original = 1
-colorscheme molokai
-"colorscheme github
-"colorscheme summerfruit256
-"colorscheme deus
-"colorscheme dracula
-"colorscheme seti
-"let ayucolor="light"
-"colorschem ayu
+colorscheme gruvbox
+let g:airline_theme = 'gruvbox'
 """"""""""""""""""""""
 "      Mappings      "
 """"""""""""""""""""""
@@ -247,7 +242,6 @@ let g:ale_fixers = {'*': ['remove_trailing_lines', 'trim_whitespace'], 'python':
 let g:ale_fix_on_save = 1
 
 set nofoldenable    " disable folding
-let g:airline_theme = 'codedark'
 set backspace=indent,eol,start " enable backspace deleting in insert mode
 set re=1 " use older version of regex matching for ruby syntax to work faster
 let g:user_emmet_leader_key='<Tab>'
