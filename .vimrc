@@ -38,6 +38,7 @@ Plug 'chriskempson/tomorrow-theme'
 Plug 'drewtempelmeyer/palenight.vim'
 Plug 'arcticicestudio/nord-vim'
 Plug 'morhetz/gruvbox'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'ayu-theme/ayu-vim'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-endwise'
@@ -114,8 +115,8 @@ syntax enable
 set termguicolors
 set t_Co=256
 let g:rehash256 = 1
-colorscheme gruvbox
-let g:airline_theme = 'gruvbox'
+colorscheme molokai
+let g:airline_theme = 'molokai'
 """"""""""""""""""""""
 "      Mappings      "
 """"""""""""""""""""""
@@ -282,7 +283,12 @@ let g:SuperTabDefaultCompletionType = '<C-n>'
 let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+" change the cursor in insert mode
+let &t_SI = "\e[6 q"
+let &t_EI = "\e[2 q"
 autocmd filetype crontab setlocal nobackup nowritebackup
+"set Jenkinsfile to groovy syntax
+au BufNewFile,BufRead Jenkinsfile setf groovy
 set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
 " Vim
 " build_go_files is a custom function that builds or compiles the test file.
